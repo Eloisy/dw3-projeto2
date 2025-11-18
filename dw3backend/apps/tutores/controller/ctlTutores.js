@@ -80,19 +80,25 @@ const updateTutores = async (req, res, next) => {
     }
 };
 
+
 const deleteTutores = async (req, res, next) => {
     try {
         const tutorREGPar = req.body; 
         
+        if (!tutorREGPar.tutorid) {
+            return res.status(400).json({ message: "ID do tutor é obrigatório para deletar." });
+        }
+
         const { msg, linhasAfetadas } = await mdlTutor.deleteTutores(tutorREGPar);
         
         if (linhasAfetadas > 0) {
             res.status(200).json({ 
                 message: "Tutor desativado com sucesso (Soft Delete).",
+                linhasAfetadas: linhasAfetadas,
                 status: msg 
             });
         } else {
-            res.status(404).json({ message: "Tutor não encontrado para desativação.", status: msg });
+            res.status(404).json({ message: "Tutor não encontrado ou ID inválido para desativação.", status: msg });
         }
     } catch (error) {
         console.error("Erro no Controller [deleteTutores]:", error);
