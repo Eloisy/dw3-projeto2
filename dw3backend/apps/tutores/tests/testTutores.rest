@@ -1,0 +1,83 @@
+### 1. AUTENTICAÇÃO (LOGIN)
+# @name loginAutenticado
+POST http://localhost:40000/Login HTTP/1.1
+Content-Type: application/json
+
+{
+    "UserName": "qwe", 
+    "Password": "qwe"
+}
+
+### Seta o token
+@accessToken = {{loginAutenticado.response.body.token}}
+//@tutorIDCriado = {{insertNovoTutor.response.body.id}} 
+---
+
+### 2. INSERÇÃO (C) - InsertTutores
+# @name insertNovoTutor
+POST http://localhost:40000/insertTutores HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+"nome": "Fernanda Lima",
+"cpf": "77766655544",
+"telefone": "11977776666",
+"rua": "Rua dos Gatos",
+"numero": "150",
+"bairro": "Vila Rica",
+"cidade": "Votuporanga"
+}
+### CAPTURA O ID DINÂMICO APÓS A INSERÇÃO DA REQUISIÇÃO ABAIXO (NOVA POSIÇÃO CORRETA)
+@tutorIDCriado = {{insertNovoTutor.response.body.tutorid}} 
+
+---
+
+### 3. BUSCAR TODOS (R) - GetAllTutores
+GET http://localhost:40000/getAllTutores HTTP/1.1
+Authorization: Bearer {{accessToken}}
+
+---
+
+### 4. BUSCAR POR ID (R) - GetTutoresByID
+POST http://localhost:40000/getTutoresByID HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "tutorid": 7
+}
+
+### 5. ATUALIZAÇÃO (U) - UpdateTutores
+POST http://localhost:40000/updateTutores HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "tutorid": 1,
+    "nome": "Teste Atualizado Agora",
+    "cpf": "99988877766",
+    "telefone": "11900001234",
+    "rua": "Rua da Mudanca",
+    "numero": "1000",
+    "bairro": "Centro",
+    "cidade": "Votuporanga"
+}
+
+### 6. SOFT DELETE (D) - DeleteTutores
+POST http://localhost:40000/deleteTutores HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "tutorid": 7
+}
+
+### 7. VERIFICAÇÃO DE SOFT DELETE
+POST http://localhost:40000/getTutoresByID HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "tutorid": 7
+}

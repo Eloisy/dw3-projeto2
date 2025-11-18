@@ -1,0 +1,72 @@
+### 1. LOGIN (Para pegar o Token)
+# @name loginAutenticado
+POST http://localhost:40000/Login HTTP/1.1
+Content-Type: application/json
+
+{
+    "UserName": "qwe",
+    "Password": "qwe"
+}
+
+### Seta o token
+@accessToken = {{loginAutenticado.response.body.token}}
+
+### 2. INSERIR SERVIÇO (C)
+# @name insertServico
+POST http://localhost:40000/insertServicos HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "nome": "Consulta Veterinária",
+    "descricao": "Consulta de rotina para cães e gatos",
+    "valor": 150.00
+}
+
+### (Opcional) Tenta capturar o ID. Se não der, use o número que aparecer no retorno.
+@servicoid = {{insertServico.response.body.servicoid}}
+
+### 3. BUSCAR TODOS OS SERVIÇOS (R)
+GET http://localhost:40000/getAllServicos HTTP/1.1
+Authorization: Bearer {{accessToken}}
+
+### 4. BUSCAR SERVIÇO POR ID (R)
+# Ajuste o ID se o seu não for 1
+POST http://localhost:40000/getServicoByID HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "servicoid": 1
+}
+
+### 5. ATUALIZAR SERVIÇO (U)
+POST http://localhost:40000/updateServicos HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "servicoid": 1,
+    "nome": "Consulta Veterinária [PROMOÇÃO]",
+    "descricao": "Consulta com retorno incluso",
+    "valor": 120.00,
+    "deleted": false
+}
+
+### 6. DELETAR SERVIÇO (D) - Soft Delete
+POST http://localhost:40000/deleteServicos HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "servicoid": 1
+}
+
+### 7. VERIFICAR SE FOI DELETADO (Deve retornar 404 ou lista vazia)
+POST http://localhost:40000/getServicoByID HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "servicoid": 1
+}

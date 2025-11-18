@@ -22,30 +22,28 @@ const insertTutores = async (nomePar, cpfPar, telefonePar, ruaPar, numeroPar, ba
     
     let linhasAfetadas;
     let msg = "ok";
-    
+    let tutorid = 0;
+
     try {
-        linhasAfetadas = (
-            await db.query(
-                "INSERT INTO tutores (nome, cpf, telefone, rua, numero, bairro, cidade) " +
-                "VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING tutorid",
-                [
-                    nomePar,
-                    cpfPar,
-                    telefonePar,
-                    ruaPar,
-                    numeroPar,
-                    bairroPar,
-                    cidadePar,
-                ]
-            )
-        ).rowCount;
+        const result = await db.query( 
+            "INSERT INTO tutores (nome, cpf, telefone, rua, numero, bairro, cidade) " +
+            "VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING tutorid", 
+            [nomePar, cpfPar, telefonePar, ruaPar, numeroPar, bairroPar, cidadePar]
+        );
         
+        if (result.rows.length > 0) {
+            tutorid = result.rows[0].tutorid;
+            linhasAfetadas = 1; 
+        } else {
+            linhasAfetadas = 0;
+        }
+
     } catch (error) {
-        msg = "[mdlTutor|insert] " + error.detail;
+        msg = "[mdlTutores|insert] " + error.detail;
         linhasAfetadas = -1; 
     }
 
-    return { msg, linhasAfetadas };
+    return { msg, linhasAfetadas, tutorid }; 
 };
 
 const updateTutores = async (tutorREGPar) => {
@@ -79,7 +77,7 @@ const updateTutores = async (tutorREGPar) => {
         ).rowCount;
         
     } catch (error) {
-        msg = "[mdlTutor|update] " + error.detail;
+        msg = "[mdlTutores|update] " + error.detail;
         linhasAfetadas = -1;
     }
 
@@ -104,7 +102,7 @@ const deleteTutores = async (tutorREGPar) => {
         ).rowCount;
         
     } catch (error) {
-        msg = "[mdlTutor|deleteTutor] " + error.detail;
+        msg = "[mdlTutores|deleteTutor] " + error.detail;
         linhasAfetadas = -1;
     }
 

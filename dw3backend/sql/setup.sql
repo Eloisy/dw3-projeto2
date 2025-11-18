@@ -61,14 +61,14 @@ CREATE TABLE servicos (
     deleted BOOLEAN DEFAULT FALSE
 );
 
--- NOVO SCRIPT PARA PET_SERVICOS
+-- SCRIPT PARA PET_SERVICOS
 DROP TABLE IF EXISTS pet_servicos CASCADE;
 CREATE TABLE pet_servicos (
     pet_servicoid BIGSERIAL CONSTRAINT pk_pet_servicos PRIMARY KEY,
     observacao TEXT, 
     data_servico DATE NOT NULL DEFAULT CURRENT_DATE,
     petid BIGINT CONSTRAINT fk_ps_pet REFERENCES pets (petid) NOT NULL,
-    servicoid BIGINT CONSTRAINT fk_ps_servico REFERENCES servicos (servicoid) NOT NULL,--Relacionamento N:M
+    servicoid BIGINT CONSTRAINT fk_ps_servico REFERENCES servicos (servicoid) NOT NULL,
 
     deleted BOOLEAN DEFAULT FALSE
 );

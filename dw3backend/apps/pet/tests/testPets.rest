@@ -1,0 +1,86 @@
+### 1. LOGIN (Para pegar o Token)
+# @name loginAutenticado
+POST http://localhost:40000/Login HTTP/1.1
+Content-Type: application/json
+
+{
+    "UserName": "qwe",
+    "Password": "qwe"
+}
+
+### Seta o token
+@accessToken = {{loginAutenticado.response.body.token}}
+
+---
+
+### 2. INSERIR PET (C)
+# @name insertPet
+POST http://localhost:40000/insertPets HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "nome": "Rex",
+    "raca": "Pastor Alemão",
+    "data_nascimento": "2020-05-15",
+    "genero": "M",
+    "tutorid": 7
+}
+
+###
+@petIDCriado = {{insertPet.response.body.petid}} 
+
+---
+
+### 3. BUSCAR TODOS OS PETS (R)
+GET http://localhost:40000/getAllPets HTTP/1.1
+Authorization: Bearer {{accessToken}}
+
+---
+
+### 4. BUSCAR PET POR ID (R)
+POST http://localhost:40000/getPetByID HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "petid": 1
+}
+
+###
+
+---
+
+
+### 5. ATUALIZAÇÃO (U) - UpdateTutores
+POST http://localhost:40000/updateTutores HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "tutorid": 7,
+    "nome": "Carla Nova [ATUALIZADA DE NOVO]",
+    "cpf": "11111111199",
+    "telefone": "11900001234",
+    "rua": "Rua das Flores",
+    "numero": "26",
+    "bairro": "Jardim",
+    "cidade": "Votuporanga"
+}
+### 6. DELETAR PET (D) - Soft Delete
+POST http://localhost:40000/deletePets HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "petid": 1
+}
+
+### 7. VERIFICAR SE FOI DELETADO
+POST http://localhost:40000/getPetByID HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "petid": 1
+}

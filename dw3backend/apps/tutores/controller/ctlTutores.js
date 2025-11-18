@@ -2,7 +2,7 @@ const mdlTutores = require("../model/mdlTutores");
 
 const getAllTutores = async (req, res, next) => {
   try {
-    const registro = await mdlTutor.getAllTutores(); 
+    const registro = await mdlTutores.getAllTutores(); 
     
     res.status(200).json({ status: "ok", registro });
   } catch (error) {
@@ -14,13 +14,13 @@ const getAllTutores = async (req, res, next) => {
 
 const getTutoresByID = async (req, res, next) => {
     try {
-        const Tutorid = req.params.id; //
-        const registro = await mdlTutor.getTutoresByID(id);
+        const id = req.body.tutorid;
+        const registro = await mdlTutores.getTutoresByID(id);
 
         if (!registro) {
             return res.status(404).json({ message: "Tutor não encontrado ou inativo." });
         }
-        res.status(200).json({ status: "ok", registro });
+        res.status(200).json({ status: "ok", registro: [registro] });    
     }catch (error) {
         console.error("Erro no Controller [getTutoresByID]:", error);
         res.status(500).json({ message: "Erro interno ao buscar tutor por ID." });
@@ -36,7 +36,7 @@ const insertTutores = async (req, res, next) => {
             return res.status(400).json({ message: "Nome e CPF são obrigatórios para o cadastro." });
         }
 
-        const { msg, linhasAfetadas } = await mdlTutor.insertTutores(
+        const { msg, linhasAfetadas } = await mdlTutores.insertTutores(
             nome, cpf, telefone, rua, numero, bairro, cidade
         );
         
@@ -63,7 +63,7 @@ const updateTutores = async (req, res, next) => {
             return res.status(400).json({ message: "ID do tutor é obrigatório para atualização." });
         }
         
-        const { msg, linhasAfetadas } = await mdlTutor.updateTutores(tutorREGPar);
+        const { msg, linhasAfetadas } = await mdlTutores.updateTutores(tutorREGPar);
         
         if (linhasAfetadas > 0) {
             res.status(200).json({ 
@@ -89,7 +89,7 @@ const deleteTutores = async (req, res, next) => {
             return res.status(400).json({ message: "ID do tutor é obrigatório para deletar." });
         }
 
-        const { msg, linhasAfetadas } = await mdlTutor.deleteTutores(tutorREGPar);
+        const { msg, linhasAfetadas } = await mdlTutores.deleteTutores(tutorREGPar);
         
         if (linhasAfetadas > 0) {
             res.status(200).json({ 

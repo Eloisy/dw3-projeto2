@@ -1,0 +1,53 @@
+### 1. LOGIN
+# @name loginAutenticado
+POST http://localhost:40000/Login HTTP/1.1
+Content-Type: application/json
+
+{ "UserName": "qwe", "Password": "qwe" }
+
+### Seta Token
+@accessToken = {{loginAutenticado.response.body.token}}
+
+### 2. INSERIR ATENDIMENTO (C)
+POST http://localhost:40000/insertPetServicos HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "petid": 1,
+  "servicoid": 1,
+  "data_servico": "2023-10-27",
+  "observacao": "Primeira dose"
+}
+
+### 3. BUSCAR TODOS (R)
+GET http://localhost:40000/getAllPetServicos HTTP/1.1
+Authorization: Bearer {{accessToken}}
+
+### 4. BUSCAR POR ID (R)
+POST http://localhost:40000/getPetServicoByID HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{ "pet_servicoid": 1 }
+
+### 5. UPDATE
+POST http://localhost:40000/updatePetServicos HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "pet_servicoid": 1,
+  "petid": 1,
+  "servicoid": 1,
+  "data_servico": "2023-10-28",
+  "observacao": "Data corrigida",
+  "deleted": false
+}
+
+### 6. DELETE
+POST http://localhost:40000/deletePetServicos HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{ "pet_servicoid": 1 }
