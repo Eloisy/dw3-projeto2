@@ -1,0 +1,21 @@
+### teste delogin
+POST http://localhost:40000/Login HTTP/1.1
+content-type: application/json
+//Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InF3ZSIsImlhdCI6MTc2MzQ1NDQ0NSwiZXhwIjoxNzY2MDQ2NDQ1fQ.fTywX1Ey-tFxU0Zi1oPbayoMKWeCebRem11aecPU-n4
+{
+    "UserName": "qwe",
+    "Password": "qwe" 
+}
+
+### teste de logout
+POST http://localhost:40000/Logout HTTP/1.1
+content-type: application/json
+//Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InF3ZSIsImlhdCI6MTc2MzQ1NDQ0NSwiZXhwIjoxNzY2MDQ2NDQ1fQ.fTywX1Ey-tFxU0Zi1oPbayoMKWeCebRem11aecPU-n4
+
+{    
+  
+}
+
+### 3. TESTE ROTA PROTEGIDA: GET ALL TUTORES
+GET http://localhost:40000/getAllTutores HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InF3ZSIsImlhdCI6MTc2MzQ1NDQ0NSwiZXhwIjoxNzY2MDQ2NDQ1fQ.fTywX1Ey-tFxU0Zi1oPbayoMKWeCebRem11aecPU-n4
