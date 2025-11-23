@@ -2,7 +2,6 @@ const express = require("express");
 const routerApp = express.Router();
 
 // --- IMPORTS ---
-const appUsuarios = require("../apps/usuarios/controller/ctlUsuarios");
 const appTutores = require("../apps/tutores/controller/ctlTutores");
 const appPets = require("../apps/pets/controller/ctlPets");
 const appLogin = require("../apps/login/controller/ctlLogin");
@@ -18,12 +17,6 @@ routerApp.get("/", (req, res) => {
   res.send("Olá mundo!");
 });
 
-// --- ROTAS DE USUÁRIOS ---
-routerApp.get("/getAllUsuarios", appLogin.AutenticaJWT, appUsuarios.getAllUsuarios);
-routerApp.post("/getUsuarioByID", appLogin.AutenticaJWT, appUsuarios.getUsuarioByID);
-routerApp.post("/insertUsuarios", appLogin.AutenticaJWT, appUsuarios.insertUsuarios);
-routerApp.post("/updateUsuarios", appLogin.AutenticaJWT, appUsuarios.updateUsuarios);
-routerApp.post("/deleteUsuarios", appLogin.AutenticaJWT, appUsuarios.deleteUsuarios);
 
 // --- ROTAS DE TUTORES ---
 routerApp.get("/getAllTutores", appLogin.AutenticaJWT, appTutores.getAllTutores);

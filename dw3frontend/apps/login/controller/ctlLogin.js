@@ -1,40 +1,67 @@
+const { Cookie } = require("express-session");
+const validate = require("../validate/vldLogin")
 const axios = require("axios");
+
+
 
 const Login = async (req, res) =>
   (async () => {
-    if (req.method == "POST") {
-      const formData = req.body;
+    let remoteMSG = "sem mais informações";
+    //req.session.destroy();
+    if (req.method == "POST") {      
+      const formData = req.body;      
+      if (!validate.Validar(formData)) {
+        return res.status(400).json({ status: "error", msg: "Dados de entrada validados" });
+      };
 
       const resp = await axios.post(process.env.SERVIDOR_DW3Back + "/login", formData, {
         headers: {
           "Content-Type": "application/json",
         },
-        timeout: 3000, 
-      }).catch(error => {
-          const msg = error.response?.data?.message || "Login inválido ou erro no servidor!";
-          return res.status(400).json({ status: "error", msg: msg });
+        timeout: 2000, 
+      }).catch(error => {           
+          if (error.code === "ECONNREFUSED" ) {            
+            remoteMSG = "Servidor indisponível"
+            return res.status(503).json({ status: "error", msg: "Erro ao fazer login: " + remoteMSG}); 
+          }
+          if (error.code === "ERR_BAD_REQUEST" ) {            
+            remoteMSG = "Usuário não autenticado";
+            return res.status(503).json({ status: "error", msg: "Erro ao fazer login: " + remoteMSG}); 
+          }
+          
+          remoteMSG = error;
+          return res.status(400).json({ status: "error", msg: "Erro ao fazer login: " + remoteMSG}); 
       });
 
-      if (!resp || !resp.data) {
+      if (!resp.data) {
         return;
-      }
-
-      req.session.isLogged = true;
-      req.session.userName = resp.data.username;
-      req.session.token = resp.data.token; 
-
+      }     
+      
+      session = req.session;
+      session.isLogged = true;
+      session.userName = resp.data.username;
+      session.token = resp.data.token;
+      session.tokenRefresh = resp.data.tokenRefresh;
+      session.tempoInativoMaximoFront = process.env.tempoInativoMaximoFront;
+      res.cookie("tempoInativoMaximoFront", process.env.tempoInativoMaximoFront, { sameSite: 'strict' });
       return res.json({ status: "ok", msg: "Login com sucesso!" });
-
-    } else { 
-      res.render("login/view/vwLogin.njk", { title: "Login PetCare" });
+    } else { //GET      
+      var parametros = { title: "DW3 - Login", teste: "'192.168.13.1'", constraint: JSON.stringify(validate.constraints) }
+      res.render("login/view/vwLogin.njk", parametros);
     }
   })();
 
-const Logout = (req, res) => {
-  req.session.destroy();
+function Logout(req, res) {
+  session = req.session;
+  session.isLogged = false;
+  session.token = false;
+  session.tokenRefresh = false;
+  session.tempoInativoMaximoFront = false;
+  
+  req.session.destroy();    
+  res.clearCookie("tempoInativoMaximoFront");   
   res.redirect("/Login");
-};
-
+}
 module.exports = {
   Login,
   Logout,

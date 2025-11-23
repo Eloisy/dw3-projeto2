@@ -1,98 +1,105 @@
 {% extends "templates/base.html" %}
 
 {% block content %}
-
-<div class="container-fluid px-4">
-    <h1 class="mt-4">Bem-vindo ao PetCare</h1>
-    <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item active">Visão Geral do Sistema</li>
-    </ol>
-
-    <div class="row">
-        
-        <div class="col-xl-3 col-md-6">
-            <div class="card bg-primary text-white mb-4">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <div class="h3 mb-0">Pets</div>
-                            <div class="small">Gerenciar Animais</div>
-                        </div>
-                        <i class="fas fa-dog fa-3x opacity-50"></i>
-                    </div>
-                </div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                    <a class="small text-white stretched-link" href="/pets">Ver Detalhes</a>
-                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-xl-3 col-md-6">
-            <div class="card bg-success text-white mb-4">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <div class="h3 mb-0">Tutores</div>
-                            <div class="small">Gerenciar Clientes</div>
-                        </div>
-                        <i class="fas fa-users fa-3x opacity-50"></i>
-                    </div>
-                </div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                    <a class="small text-white stretched-link" href="/tutores">Ver Detalhes</a>
-                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-xl-3 col-md-6">
-            <div class="card bg-warning text-white mb-4">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <div class="h3 mb-0">Ficha do Pet</div>
-                            <div class="small">Histórico</div>
-                        </div>
-                        <i class="fas fa-clipboard-list fa-3x opacity-50"></i>
-                    </div>
-                </div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                    <a class="small text-white stretched-link" href="/pet_servicos">Acessar</a>
-                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-xl-3 col-md-6">
-            <div class="card bg-danger text-white mb-4">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <div class="h3 mb-0">Serviços</div>
-                            <div class="small">Preços de Banho/Tosa</div>
-                        </div>
-                        <i class="fas fa-cut fa-3x opacity-50"></i>
-                    </div>
-                </div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                    <a class="small text-white stretched-link" href="/servicos">Configurar</a>
-                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="card mb-4">
+  
+  <ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item active">{{parametros.title}}</li>
+  </ol>
+  
+  <div class="row">
+    <div class="col-12">
+      <div class="card bg-light mb-4">
         <div class="card-header">
-            <i class="fas fa-info-circle me-1"></i>
-            Sobre o Sistema
+          <i class="fas fa-chart-line me-1"></i>
+          Visão Geral do PetCare
         </div>
         <div class="card-body">
-            <p class="lead">Olá, <strong>{{ Usuario }}</strong>! Este é o sistema de gerenciamento do <strong>Pet Shop</strong>.</p>
-            <p>Utilize o menu lateral para cadastrar novos tutores, registrar pets e lançar os serviços de banho e tosa.</p>
+          <p class="lead">Bem-vindo(a), {{ parametros.userName }}!</p>
+          <p>Este é o painel de controle dos módulos de Cadastro de Tutores, Pets e Serviços.</p>
+          <p>Use o menu lateral para gerenciar os dados ou clique nos cartões abaixo para acesso rápido.</p>
         </div>
+      </div>
     </div>
-</div>
+  </div>
+
+  <div class="row">
+    
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card border-start border-primary border-4 shadow h-100 py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col me-2">
+              <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                Tutores
+              </div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">Gerenciar Proprietários</div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-user-friends fa-2x text-gray-300"></i>
+            </div>
+          </div>
+          <a href="/tutores" class="stretched-link"></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card border-start border-success border-4 shadow h-100 py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col me-2">
+              <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                Pets
+              </div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">Gerenciar Animais</div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-paw fa-2x text-gray-300"></i>
+            </div>
+          </div>
+          <a href="/pets" class="stretched-link"></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card border-start border-warning border-4 shadow h-100 py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col me-2">
+              <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                Serviços
+              </div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">Gerenciar Catálogo</div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-handshake fa-2x text-gray-300"></i>
+            </div>
+          </div>
+          <a href="/servicos" class="stretched-link"></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card border-start border-danger border-4 shadow h-100 py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col me-2">
+              <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                Atendimentos
+              </div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">Histórico e Agendamento</div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-calendar-check fa-2x text-gray-300"></i>
+            </div>
+          </div>
+          <a href="/petservicos" class="stretched-link"></a>
+        </div>
+      </div>
+    </div>
+    
+  </div>
 
 {% endblock %}

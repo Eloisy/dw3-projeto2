@@ -1,0 +1,122 @@
+{% extends "templates/base.html" %}
+
+{% block content %}
+  
+  <ol class="breadcrumb mb-2">
+    <li class="breadcrumb-item active">{{parametros.title}}</li>
+  </ol>
+  
+  <div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+      <h6 class="m-0 font-weight-bold text-primary">Listagem de Tutores</h6>
+      <button class="btn btn-success" onclick="abrirManutencao()">
+        <i class="fas fa-plus"></i> Novo Tutor
+      </button>
+    </div>
+
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered" id="dataTableTutores" width="100%" cellspacing="0">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nome</th>
+              <th>CPF</th>
+              <th>Telefone</th>
+              <th>Cidade</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="listaTutores">
+            </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+<script src="/static/js/api.js"></script>
+<script src="/static/js/tutores.js"></script>
+<script>
+    window.onload = function () {
+        carregarTutores();
+    };
+    
+    /**
+     * Redireciona para a página de Manutenção (Inserção ou Edição).
+     * @param {number} id - O ID do tutor (0 para novo).
+     */
+    function abrirManutencao(id = 0) {
+        if (id === 0) {
+            window.location.href = '/tutores/manutencao';
+        } else {
+            window.location.href = `/tutores/manutencao?tutorid=${id}`;
+        }
+    }
+
+    /**
+     * Função para chamar a API GetAllTutores e popular a tabela.
+     */
+    async function carregarTutores() {
+        const listaBody = document.getElementById('listaTutores');
+        listaBody.innerHTML = '<tr><td colspan="6">Carregando dados...</td></tr>';
+
+        const response = await fetchAPI('/getAllTutores', {
+            method: 'GET'
+        });
+
+        listaBody.innerHTML = '';
+
+        if (response.status === 'ok' && response.registro) {
+            
+            if ($.fn.DataTable.isDataTable('#dataTableTutores')) {
+                $('#dataTableTutores').DataTable().destroy();
+            }
+
+            response.registro.forEach(tutor => {
+                const row = listaBody.insertRow();
+                row.insertCell(0).textContent = tutor.tutorid;
+                row.insertCell(1).textContent = tutor.nome;
+                row.insertCell(2).textContent = tutor.cpf;
+                row.insertCell(3).textContent = tutor.telefone;
+                row.insertCell(4).textContent = tutor.cidade;
+
+                const acoesCell = row.insertCell(5);
+                acoesCell.innerHTML = `
+                    <button class="btn btn-sm btn-info me-2" title="Editar" onclick="abrirManutencao(${tutor.tutorid})">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn btn-sm btn-danger" title="Excluir (Soft Delete)" onclick="deletarTutor(${tutor.tutorid}, '${tutor.nome}')">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                `;
+            });
+            
+            $('#dataTableTutores').DataTable(); 
+
+        } else {
+            listaBody.innerHTML = '<tr><td colspan="6" class="text-danger">Não foi possível carregar os tutores. Erro: ' + (response.message || 'Desconhecido') + '</td></tr>';
+        }
+    }
+
+    /**
+     * Executa o Soft Delete.
+     */
+    async function deletarTutor(id, nome) {
+        if (confirm(`Deseja realmente desativar (Soft Delete) o tutor ${nome} (ID: ${id})?`)) {
+            
+            const response = await fetchAPI('/deleteTutores', {
+                method: 'POST',
+                body: JSON.stringify({ tutorid: id })
+            });
+
+            if (response.status === 'ok' && response.linhasAfetadas > 0) {
+                alert('Tutor desativado com sucesso.');
+                carregarTutores();
+            } else {
+                alert('Falha ao desativar. Erro: ' + (response.message || 'Desconhecido'));
+            }
+        }
+    }
+</script>
+
+{% endblock %}

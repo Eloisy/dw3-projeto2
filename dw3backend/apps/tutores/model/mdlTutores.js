@@ -1,6 +1,8 @@
-const db = require("../../../database/databaseconfig");
+const db = require("../../../database/databaseConfig");
 
+// --- 1. FUNÇÃO GET ALL ---
 const getAllTutores = async () => {
+    console.log("[DEBUG-TUTORES] Executando consulta GetAllTutores...");
     return (
         await db.query(
             "SELECT tutorid, nome, cpf, telefone, rua, numero, bairro, cidade FROM tutores WHERE deleted = false ORDER BY nome ASC"
@@ -9,6 +11,7 @@ const getAllTutores = async () => {
 };
 
 
+// --- 2. FUNÇÃO GET BY ID  ---
 const getTutoresByID = async (idPar) => {
     return (
         await db.query(
@@ -18,6 +21,9 @@ const getTutoresByID = async (idPar) => {
     ).rows[0];
 };
 
+
+
+// --- 3. FUNÇÃO INSERT ---
 const insertTutores = async (nomePar, cpfPar, telefonePar, ruaPar, numeroPar, bairroPar, cidadePar) => {
     
     let linhasAfetadas;
@@ -46,6 +52,9 @@ const insertTutores = async (nomePar, cpfPar, telefonePar, ruaPar, numeroPar, ba
     return { msg, linhasAfetadas, tutorid }; 
 };
 
+
+
+// --- 4. FUNÇÃO UPDATE  ---
 const updateTutores = async (tutorREGPar) => {
     
     let linhasAfetadas;
@@ -84,6 +93,9 @@ const updateTutores = async (tutorREGPar) => {
     return { msg, linhasAfetadas };
 };
 
+
+
+// --- 5. FUNÇÃO DELETE (SOFT DELETE) ---
 const deleteTutores = async (tutorREGPar) => {
     
     let linhasAfetadas;

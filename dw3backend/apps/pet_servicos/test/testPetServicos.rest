@@ -3,7 +3,7 @@
 POST http://localhost:40000/Login HTTP/1.1
 Content-Type: application/json
 
-{ "UserName": "qwe", "Password": "qwe" }
+{ "UserName": "admin", "Password": "admin" }
 
 ### Seta Token
 @accessToken = {{loginAutenticado.response.body.token}}

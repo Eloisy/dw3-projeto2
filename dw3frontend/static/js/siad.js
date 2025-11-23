@@ -33,4 +33,3 @@ function siadCryptValue(valuePar, operPar) {
     return decrypted;
   }
 }
-

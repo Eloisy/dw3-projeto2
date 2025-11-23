@@ -18,7 +18,7 @@
   <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
       <!-- Navbar Brand-->
-      <a class="navbar-brand ps-3" href="index.html">Sistema PetCare</a>
+      <a class="navbar-brand ps-3" href="index.html">PetCare Sistema</a>
       <!-- Sidebar Toggle-->
       <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!">
         <i class="fas fa-bars"></i>
@@ -53,7 +53,9 @@
     <div id="layoutSidenav">
       {% include "templates/menuLeft.html" %}
 
+      <!-----Início Páginas filhas ----->
       <div id="layoutSidenav_content">
+        <!-----Início Páginas filhas ----->
 
         <div class="container-fluid md-12">
 
@@ -63,10 +65,12 @@
 
         </div>
 
+        <!-----Fim Páginas filhas ----->
 
         {% include "templates/footer.html" %}
       </div>
 
+      <!-----Fim Páginas filhas ----->
     </div>
 
     <script src="/static/js/5.3/bootstrap.bundle.min.js"></script>

@@ -6,8 +6,8 @@ function authenticationMiddleware(req, res, next) {
 }
 
 router.get('/', authenticationMiddleware, function (req, res, next) {
-    parametros = { title: 'Módulos > Pets', userName: req.session.userName };
-    res.render('pets/view/index.njk', { parametros });
+    parametros = { title: 'Módulos > Serviços', userName: req.session.userName };
+    res.render('servicos/view/index.njk', { parametros });
 });
 
 module.exports = router;

@@ -5,35 +5,25 @@ async function vwLogin() {
   if (!Validar(formData)) {
     return false;
   } else {
-    
-    const dadosLogin = {
-        UserName: formData.get('UserName'), 
-        Password: formData.get('Password')
-    };
 
-    let resp = await axios.post('/Login', dadosLogin, {
+
+    resp = await axios.post('login', formData, {
       headers: {
         "Content-Type": "application/json",
       },
     })
-    .catch(error => {        
-        const msg = error.response?.data?.msg || error.message;
-        alert('Erro: ' + msg);
-        return null; 
-    });
+      .catch(error => {        
+        alert('Error:' + error.response.data.msg);
+        return;
+      });
 
-    console.log("RESPOSTA:", resp);
-    
-    if (!resp || !resp.data) {
+    console.log("Valor RESP:" + JSON.stringify(resp))  ;
+    if (!resp) {
       return;
     }
+    
 
-    if (resp.data.status === "ok") {
-        Cookies.set('isLogged', true, { path: '/' }); 
-        
-        window.open("/", "_self");
-    } else {
-        alert("Login falhou!");
-    }
+    Cookies.set('isLogged', true, { sameSite: 'strict' });   
+    window.open("/", "_self");
   }
 }
