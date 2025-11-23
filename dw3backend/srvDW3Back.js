@@ -1,22 +1,22 @@
-// DEBUG=srvBack:* npm start
-
 require('dotenv').config();
 
-//import das bibliotecas
 const express = require('express');
-const cors =require('cors');
+const cors = require('cors');
 const app = express();
 
+const router = require('./routes/router');
 
-const router = require('./routes/router'); //rota
-const port = process.env.PORT; //porta
+const port = process.env.PORT || 40000;
 
+// --- Middlewares (Configurações) ---
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.use(express.json()); // entender o json q vai vir
-app.use(cors()); // o front vai podr acessar o serv do back
-app.use('/', router);//define as rtas principais
+app.use(cors());
 
+// --- Rotas ---
+app.use('/', router);
 
 app.listen(port, () => {
   console.log(`Servidor Back-end rodando na porta ${port}`);
-})
+});

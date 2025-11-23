@@ -4,24 +4,24 @@ const mdlLogin = require("../model/mdlLogin");
 
 const Login = async (req, res, next) => { 
   
-const { UserName, Password } = req.body;
-const credencial = await mdlLogin.GetCredencial(UserName);//consulta o bd
+  const { UserName, Password } = req.body;
+  const credencial = await mdlLogin.GetCredencial(UserName);
 
-  if (credencial.length == 0) {//se o model retornar um array vazio, vai dar ruim/403
+  if (credencial.length == 0) {
     return res.status(403).json({ message: "Usuário não identificado!" });    
   }  
 
   console.log('Username recebido:', UserName);
-  console.log('Senha recebida:', Password);
+  console.log('Senha recebida:', Password);
 
-  if (bCrypt.compareSync(Password, credencial[0].password)) {//compara a senha enviada pelo usuário c o hash aramzenad no bd
-    //auth ok
-    const username = credencial[0].username;//hash (usando o bcryptjs)
+  if (bCrypt.compareSync(Password, credencial[0].password)) {
+    const username = credencial[0].username;
 
     const token = jwt.sign({ username }, process.env.SECRET_API, {
-      expiresIn: '30d', //30 diassss com o token
+      expiresIn: '30d', 
     });
-    return res.json({ auth: true, token: token });
+
+    return res.json({ auth: true, token: token, username: username });
   }
 
   res.status(403).json({ message: "Login inválido!" });

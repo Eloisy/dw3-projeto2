@@ -1,0 +1,61 @@
+<div id="layoutSidenav_nav">
+  <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+    <div class="sb-sidenav-menu">
+      <div class="nav">
+        
+        <div class="sb-sidenav-menu-heading">Principal</div>
+        <a class="nav-link" href="/">
+          <div class="sb-nav-link-icon">
+            <i class="fas fa-home"></i>
+          </div>
+          Home
+        </a>
+        
+        <div class="sb-sidenav-menu-heading">PetCare</div>
+        
+        <a class="nav-link" href="/pets">
+          <div class="sb-nav-link-icon">
+            <i class="fas fa-paw"></i>
+          </div>
+          Gerenciar Pets
+        </a>
+
+        <a class="nav-link" href="/tutores">
+          <div class="sb-nav-link-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          Gerenciar Tutores
+        </a>
+
+        <a class="nav-link" href="/servicos">
+          <div class="sb-nav-link-icon">
+            <i class="fas fa-briefcase-medical"></i>
+          </div>
+          Serviços
+        </a>
+
+        <a class="nav-link" href="/pet_servicos">
+          <div class="sb-nav-link-icon">
+            <i class="fas fa-file-medical"></i>
+          </div>
+          Ficha de Atendimento
+        </a>
+
+        <div class="sb-sidenav-menu-heading">Conta</div>
+        
+        <a class="nav-link" href="/Logout">
+          <div class="sb-nav-link-icon">
+            <i class="fas fa-sign-out-alt"></i>
+          </div>
+          Sair
+        </a>
+
+      </div>
+    </div>
+    
+    <div class="sb-sidenav-footer">
+      <div class="small">Bem vindo:</div>
+      {{ parametros.Usuario }}      
+    </div>
+  </nav>
+</div>
