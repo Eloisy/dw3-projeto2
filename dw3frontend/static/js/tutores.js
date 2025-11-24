@@ -1,8 +1,5 @@
 // dw3frontend/static/js/tutores.js
-// ATENÇÃO: As variáveis globais 'modalElement' e 'form' foram renomeadas para evitar conflitos.
-
 // 1. Inicialização do Modal e Formulário
-// O 'new bootstrap.Modal' é chamado aqui para garantir que esteja no topo do escopo do arquivo.
 const modalManutencaoTutor = new bootstrap.Modal(document.getElementById('modalManutencaoTutor'));
 const formManutencaoTutor = document.getElementById('formManutencao');
 
@@ -10,9 +7,7 @@ window.onload = function () {
     carregarTutores();
 };
 
-/**
- * Função para chamar a API GetAllTutores e popular a tabela.
- */
+//carregar tutores
 async function carregarTutores() {
     const listaBody = document.getElementById('listaTutores');
     listaBody.innerHTML = '<tr><td colspan="6">Carregando dados...</td></tr>';
@@ -56,9 +51,8 @@ async function carregarTutores() {
 }
 
 
-/**
- * Função global chamada pelo botão Novo Tutor.
- */
+
+//abrir cadastro tutor
 function abrirModalCadastro() {
     document.getElementById('modalLabel').textContent = 'Cadastro de Novo Tutor';
     formManutencaoTutor.reset();
@@ -66,9 +60,7 @@ function abrirModalCadastro() {
     modalManutencaoTutor.show();
 }
 
-/**
- * Carrega dados do tutor e abre o modal para edição.
- */
+
 async function abrirModalEdicao(id) {
     document.getElementById('modalLabel').textContent = 'Edição de Tutor (ID: ' + id + ')';
     formManutencaoTutor.reset();
@@ -95,9 +87,10 @@ async function abrirModalEdicao(id) {
     }
 }
 
-/**
- * Salva (Insere ou Atualiza) os dados do formulário.
- */
+
+
+
+//salvar tutor
 async function salvarTutor() {
     const id = document.getElementById('tutorid').value;
     const isUpdate = id !== '0';
@@ -121,9 +114,9 @@ async function salvarTutor() {
     }
 }
 
-/**
- * Executa o Soft Delete.
- */
+
+
+ //soft delete
 async function deletarTutor(id, nome) {
     if (confirm(`Deseja realmente desativar (Soft Delete) o tutor ${nome} (ID: ${id})?`)) {
         

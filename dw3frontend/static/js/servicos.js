@@ -21,8 +21,7 @@ window.onload = function () {
     }
 };
 
-// --- FUNÇÕES DE LISTAGEM E EXCLUSÃO ---
-
+//abrir form
 function abrirManutencaoServico(id = 0) {
     if (id === 0) {
         window.location.href = '/servicos/manutencao';
@@ -31,6 +30,8 @@ function abrirManutencaoServico(id = 0) {
     }
 }
 
+
+//mostra tpds ps serviços
 async function carregarServicos() {
     const listaBody = document.getElementById('listaServicos');
     listaBody.innerHTML = '<tr><td colspan="5">Carregando dados...</td></tr>';
@@ -68,6 +69,8 @@ async function carregarServicos() {
     }
 }
 
+
+//soft delete 
 async function deletarServico(id, nome) {
     if (confirm(`Deseja realmente desativar (Soft Delete) o serviço ${nome} (ID: ${id})?`)) {
         
@@ -86,8 +89,7 @@ async function deletarServico(id, nome) {
 }
 
 
-// --- FUNÇÕES DE MANUTENÇÃO (Formulário) ---
-
+//carregar dados esepcíficos, por id
 async function carregarDadosServico(id) {
     document.getElementById('servicoid').value = id;
     document.getElementById('mensagemErro').textContent = 'Carregando dados...';
@@ -113,6 +115,8 @@ async function carregarDadosServico(id) {
 }
 
 
+
+//salvar servço
 async function salvarServico() {
     if (!document.getElementById('nome').value || !document.getElementById('valor').value) {
         document.getElementById('mensagemErro').textContent = 'Erro: Nome e Valor são obrigatórios.';
@@ -125,7 +129,6 @@ async function salvarServico() {
     const formData = new FormData(formManutencaoServico);
     const servicoData = Object.fromEntries(formData.entries());
 
-    // Se for atualização, garanta que o valor 'deleted' volte como boolean (string 'false')
     if (isUpdate) {
         servicoData.deleted = servicoData.deleted === 'true'; 
     }

@@ -6,13 +6,10 @@ const atendimentoId = params.get('pet_servicoid') || 0;
 const isEdicao = atendimentoId !== 0;
 
 window.onload = function () {
-    // 1. Lógica para a página de LISTAGEM
     if (document.getElementById('listaAtendimentos')) {
         carregarAtendimentos();
     }
     
-    // 2. Lógica para a página de MANUTENÇÃO (Formulário)
-    // Se este bloco não existir ou falhar, os campos ficam "Carregando..."
     if (document.getElementById('formManutencaoAtendimento')) {
         Promise.all([
             carregarPetsSelect(),
@@ -29,7 +26,6 @@ window.onload = function () {
     }
 };
 
-// --- FUNÇÕES DE LISTAGEM E EXCLUSÃO ---
 
 function abrirManutencaoAtendimento(id = 0) {
     if (id === 0) {
@@ -41,7 +37,6 @@ function abrirManutencaoAtendimento(id = 0) {
 
 async function carregarAtendimentos() {
     const listaBody = document.getElementById('listaAtendimentos');
-    // Colspan ajustado para 7 colunas
     listaBody.innerHTML = '<tr><td colspan="7">Carregando dados...</td></tr>'; 
 
     const response = await fetchAPI('/getAllPetServicos', { method: 'GET' });
@@ -56,10 +51,9 @@ async function carregarAtendimentos() {
         response.registro.forEach(atendimento => {
             const row = listaBody.insertRow();
             
-            // 7 COLUNAS DE DADOS:
             row.insertCell(0).textContent = atendimento.pet_servicoid;
             row.insertCell(1).textContent = atendimento.nome_pet;
-            row.insertCell(2).textContent = atendimento.nome_tutor; // Exibe Nome do Tutor
+            row.insertCell(2).textContent = atendimento.nome_tutor;
             row.insertCell(3).textContent = atendimento.nome_servico;
             row.insertCell(4).textContent = `R$ ${parseFloat(atendimento.valor).toFixed(2)}`;
             row.insertCell(5).textContent = atendimento.data_servico.split('T')[0];
@@ -99,7 +93,7 @@ async function deletarAtendimento(id, nome) {
 }
 
 
-// --- FUNÇÕES DE MANUTENÇÃO (Formulário) ---
+
 
 async function carregarPetsSelect() {
     const selectPet = document.getElementById('petid');
@@ -110,7 +104,6 @@ async function carregarPetsSelect() {
         response.registro.forEach(pet => {
             const option = document.createElement('option');
             option.value = pet.petid;
-            // Exibe Nome do Pet e Nome do Tutor no dropdown para facilitar
             option.textContent = `${pet.nome} (Tutor: ${pet.nome_tutor})`; 
             selectPet.appendChild(option);
         });
@@ -156,6 +149,8 @@ async function carregarDadosAtendimento(id) {
 }
 
 
+
+
 async function salvarAtendimento() {
     if (!document.getElementById('petid').value || !document.getElementById('servicoid').value || !document.getElementById('data_servico').value) {
         document.getElementById('mensagemErro').textContent = 'Erro: Pet, Serviço e Data são obrigatórios.';
@@ -167,7 +162,7 @@ async function salvarAtendimento() {
     
     const formData = new FormData(formManutencaoAtendimento);
     const atendimentoData = Object.fromEntries(formData.entries());
-    atendimentoData.deleted = false; // Força o deleted false
+    atendimentoData.deleted = false;
 
     const endpoint = isUpdate ? '/updatePetServicos' : '/insertPetServicos';
     document.getElementById('mensagemErro').textContent = 'Salvando...';

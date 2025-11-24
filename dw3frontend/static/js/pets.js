@@ -11,7 +11,6 @@ window.onload = function () {
     }
     
     if (document.getElementById('formManutencaoPet')) {
-        // Inicializa o select de tutores primeiro
         carregarTutoresSelect()
             .then(() => {
                 if (isEdicao) {
@@ -25,9 +24,7 @@ window.onload = function () {
     }
 };
 
-// --- FUNÇÕES AUXILIARES ---
-
-// Mapeia {ID: Nome} para consulta rápida
+//mostra tutor
 async function carregarTutoresMap() {
     const response = await fetchAPI('/getAllTutores', { method: 'GET' });
     const tutoresMap = {};
@@ -39,7 +36,7 @@ async function carregarTutoresMap() {
     return tutoresMap;
 }
 
-// --- FUNÇÕES DE LISTAGEM E EXCLUSÃO ---
+//abre o form
 function abrirManutencaoPet(id = 0) {
     if (id === 0) {
         window.location.href = '/pets/manutencao';
@@ -49,7 +46,7 @@ function abrirManutencaoPet(id = 0) {
 }
 
 
-
+//mostra pets
 async function carregarPets() {
     const listaBody = document.getElementById('listaPets');
     listaBody.innerHTML = '<tr><td colspan="6">Carregando dados...</td></tr>';
@@ -89,7 +86,7 @@ async function carregarPets() {
 }
 
 
-
+//soft delte
 async function deletarPet(id, nome) {
     if (confirm(`Deseja realmente desativar (Soft Delete) o pet ${nome} (ID: ${id})?`)) {
         
@@ -108,7 +105,7 @@ async function deletarPet(id, nome) {
 }
 
 
-// --- FUNÇÕES DE MANUTENÇÃO (Formulário) ---
+
 async function carregarTutoresSelect() {
     const selectTutor = document.getElementById('tutorid');
     selectTutor.innerHTML = '<option value="">Carregando...</option>';
@@ -120,7 +117,6 @@ async function carregarTutoresSelect() {
         response.registro.forEach(tutor => {
             const option = document.createElement('option');
             option.value = tutor.tutorid;
-            // Exibindo nome e ID no select
             option.textContent = `${tutor.nome} (ID: ${tutor.tutorid})`; 
             selectTutor.appendChild(option);
         });
@@ -131,7 +127,7 @@ async function carregarTutoresSelect() {
     return Promise.resolve();
 }
 
-
+//mostra as info dos pets
 async function carregarDadosPet(id) {
     document.getElementById('petid').value = id;
     document.getElementById('mensagemErro').textContent = 'Carregando dados...';
@@ -157,6 +153,8 @@ async function carregarDadosPet(id) {
     }
 }
 
+
+//salva o pet
 async function salvarPet() {
     if (!document.getElementById('nome').value || !document.getElementById('tutorid').value) {
         document.getElementById('mensagemErro').textContent = 'Erro: Nome do Pet e Tutor são obrigatórios.';

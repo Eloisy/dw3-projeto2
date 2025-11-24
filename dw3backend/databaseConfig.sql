@@ -1,78 +1,46 @@
------ Cria um banco de dados
--- create database dw3;
-
-create table IF NOT EXISTS cursos (
-    cursoid bigserial constraint pk_cursos PRIMARY KEY,
-    codigo varchar(50) UNIQUE,
-    descricao VARCHAR(60),
-    ativo boolean,
-    deleted boolean DEFAULT false
+-- 1. Tabela de Credenciais para o Módulo LOGIN
+CREATE TABLE usuarios (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    deleted BOOLEAN DEFAULT FALSE
 );
 
-insert into cursos values 
-    (default, 'BSI', 'Bacharelado em Sistemas de Informação', true),
-    (default, 'DIREITO', 'Bacharelado em Direito', true),
-    (default, 'LETRAS', 'Licenciatura em Letras', true),
-    (default, 'ADM', 'Bacharelado em Administração', false)
-    ON CONFLICT DO NOTHING;
-
-create table IF NOT EXISTS alunos (
-    alunoid bigserial constraint pk_alunos PRIMARY KEY,
-    prontuario varchar(10) UNIQUE,
-    nome varchar(50),
-    endereco VARCHAR(60),
-    rendafamiliar numeric(8,2),
-    datanascimento date,
-    cursoid bigint constraint fk_aluno_curso REFERENCES cursos,
-    deleted boolean DEFAULT false
+-- 2. Tabela de TUTORES (Clientes)
+CREATE TABLE tutores (
+    tutorid SERIAL PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    cpf VARCHAR(14) UNIQUE NOT NULL,
+    telefone VARCHAR(20),
+    rua VARCHAR(100),
+    numero VARCHAR(10),
+    bairro VARCHAR(100),
+    cidade VARCHAR(100),
+    deleted BOOLEAN DEFAULT FALSE
 );
 
-insert into alunos values 
-    (default, 'pront1', 'José das Neves', 'Rua A, Votuporanga', 6891.60, '2000-01-31', 
-        (SELECT cursoid from CURSOS where codigo = 'BSI')),
-    (default, 'pront2', 'Maria Silveira', 'Rua B, São José do Rio Preto', 7372.41, '2002-03-12', 
-        (SELECT cursoid from CURSOS where codigo = 'DIREITO'))
-ON CONFLICT DO NOTHING;
-
-create table IF NOT EXISTS usuarios (
-    usuarioid bigserial constraint pk_usuarios PRIMARY KEY,
-    username varchar(10) UNIQUE,
-    password text,
-    deleted boolean DEFAULT false
+-- 3. Tabela de PETS (Animais)
+CREATE TABLE pets (
+    petid SERIAL PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    raca VARCHAR(50),
+    idade INT,
+    tutorid INT NOT NULL REFERENCES tutores(tutorid),
+    deleted BOOLEAN DEFAULT FALSE
 );
 
-CREATE EXTENSION if NOT EXISTS pgcrypto;
-
-insert into usuarios values 
-    (default, 'admin', crypt('admin', gen_salt('bf'))), -- senha criptografada com bcrypt
-    (default, 'qwe', crypt('qwe', gen_salt('bf'))) -- senha criptografada com bcrypt
-ON CONFLICT DO NOTHING;
-
--- Usado para exercícios
-
-create table IF NOT EXISTS clientes (
-    clienteid bigserial constraint pk_clientes PRIMARY KEY,
-    codigo varchar(50) UNIQUE,
-    nome VARCHAR(60),
-    endereco VARCHAR(50),
-    ativo boolean,
-    deleted boolean DEFAULT false
+-- 4. Tabela de SERVICOS
+CREATE TABLE servicos (
+    servicoid SERIAL PRIMARY KEY,
+    descricao VARCHAR(100) NOT NULL,
+    valor DECIMAL(10, 2) NOT NULL
 );
 
-insert into clientes values 
-    (default, 'CLI01', 'João da Silva', 'Rua A1', true),
-    (default, 'CLI02', 'Marcia Almeida', 'Rua B2', true)
-    ON CONFLICT DO NOTHING;
-
-create table IF NOT EXISTS pedidos (
-    pedidoid bigserial constraint pk_pedidos PRIMARY KEY,
-    numero bigint UNIQUE,
-    data DATE,
-    valortotal numeric(9,2),
-    clienteid bigint constraint fk_pedido_cliente REFERENCES clientes,    
-    deleted boolean DEFAULT false
+-- 5. Tabela de Ligação PET_SERVICOS
+CREATE TABLE pet_servicos (
+    pet_servicoid SERIAL PRIMARY KEY,
+    petid INT NOT NULL REFERENCES pets(petid),
+    servicoid INT NOT NULL REFERENCES servicos(servicoid),
+    data_servico DATE NOT NULL,
+    UNIQUE (petid, servicoid, data_servico)
 );
-
-insert into pedidos values 
- (default, 234, '2020-01-31', 6891.60, (SELECT clienteid from CLIENTES where codigo = 'CLI01'))
- ON CONFLICT DO NOTHING;
