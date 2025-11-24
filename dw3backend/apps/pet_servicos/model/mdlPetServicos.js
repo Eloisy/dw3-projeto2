@@ -1,5 +1,6 @@
-const db = require("../../../database/databaseconfig");
+const db = require("../../../database/databaseConfig");
 
+// --- 1. FUNÇÃO GET ALL ---
 const getAllPetServicos = async () => {
   return (
     await db.query(
@@ -9,18 +10,22 @@ const getAllPetServicos = async () => {
         ps.observacao,
         ps.petid,
         p.nome AS nome_pet,
+        t.nome AS nome_tutor,   -- <<< NOVO: Nome do Tutor
         ps.servicoid,
         s.nome AS nome_servico,
         s.valor
-       FROM pet_servicos ps
-       INNER JOIN pets p ON ps.petid = p.petid
-       INNER JOIN servicos s ON ps.servicoid = s.servicoid
-       WHERE ps.deleted = false 
-       ORDER BY ps.data_servico DESC`
+      FROM pet_servicos ps
+      INNER JOIN pets p ON ps.petid = p.petid
+      INNER JOIN tutores t ON p.tutorid = t.tutorid -- <<< JOIN com Tutores
+      INNER JOIN servicos s ON ps.servicoid = s.servicoid
+      WHERE ps.deleted = false 
+      ORDER BY ps.data_servico DESC`
     )
   ).rows;
 };
 
+
+// --- 2. FUNÇÃO GET BY ID ---
 const getPetServicoByID = async (petServicoIDPar) => {
   return (
     await db.query(
@@ -30,17 +35,20 @@ const getPetServicoByID = async (petServicoIDPar) => {
         ps.observacao,
         ps.petid,
         p.nome AS nome_pet,
+        t.nome AS nome_tutor,   -- <<< NOVO: Nome do Tutor
         ps.servicoid,
         s.nome AS nome_servico,
         s.valor
-       FROM pet_servicos ps
-       INNER JOIN pets p ON ps.petid = p.petid
-       INNER JOIN servicos s ON ps.servicoid = s.servicoid
-       WHERE ps.pet_servicoid = $1 AND ps.deleted = false`,
+      FROM pet_servicos ps
+      INNER JOIN pets p ON ps.petid = p.petid
+      INNER JOIN tutores t ON p.tutorid = t.tutorid -- <<< JOIN com Tutores
+      INNER JOIN servicos s ON ps.servicoid = s.servicoid
+      WHERE ps.pet_servicoid = $1 AND ps.deleted = false`,
       [petServicoIDPar]
     )
   ).rows;
 };
+
 
 const insertPetServicos = async (regPar) => {
   let linhasAfetadas;

@@ -1,0 +1,51 @@
+{% extends "templates/base.html" %}
+
+{% block content %}
+
+    <ol class="breadcrumb mb-2">
+        <li class="breadcrumb-item"><a href="/servicos">Serviços</a></li>
+        <li class="breadcrumb-item active">{{parametros.title}}</li>
+    </ol>
+    
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary" id="manutencaoTitulo">Cadastrar Novo Serviço</h6>
+        </div>
+        <div class="card-body">
+            
+            <form id="formManutencaoServico">
+                <input type="hidden" id="servicoid" name="servicoid" value="0">
+                <input type="hidden" id="deleted" name="deleted" value="false">
+                
+                <div class="mb-3">
+                    <label for="nome" class="form-label">Nome do Serviço*</label>
+                    <input type="text" class="form-control" id="nome" name="nome" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="descricao" class="form-label">Descrição</label>
+                    <textarea class="form-control" id="descricao" name="descricao" rows="3"></textarea>
+                </div>
+
+                <div class="mb-3 col-md-4">
+                    <label for="valor" class="form-label">Valor (R$)*</label>
+                    <input type="number" class="form-control" id="valor" name="valor" step="0.01" required>
+                </div>
+                
+                <div class="mt-4">
+                    <button type="button" class="btn btn-primary me-2" onclick="salvarServico()">
+                        <i class="fas fa-save"></i> Salvar
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="window.location.href='/servicos'">
+                        <i class="fas fa-arrow-left"></i> Voltar
+                    </button>
+                    <p id="mensagemErro" class="text-danger mt-3"></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+<script src="/static/js/api.js"></script>
+<script src="/static/js/servicos.js"></script>
+
+</main> {% endblock %}
