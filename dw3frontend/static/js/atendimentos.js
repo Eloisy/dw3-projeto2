@@ -94,7 +94,6 @@ async function deletarAtendimento(id, nome) {
 
 
 
-
 async function carregarPetsSelect() {
     const selectPet = document.getElementById('petid');
     const response = await fetchAPI('/getAllPets', { method: 'GET' });

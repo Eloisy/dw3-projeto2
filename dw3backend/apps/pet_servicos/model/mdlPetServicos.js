@@ -72,63 +72,36 @@ const insertPetServicos = async (regPar) => {
     linhasAfetadas = -1;
   }
 
-  return { msg, linhasAfetadas };
-};
 
-const updatePetServicos = async (regPar) => {
-  let linhasAfetadas;
-  let msg = "ok";
-  try {
-    linhasAfetadas = (
-      await db.query(
-        "UPDATE pet_servicos SET " +
-          "petid = $2, " +
-          "servicoid = $3, " +
-          "data_servico = $4, " +
-          "observacao = $5, " +
-          "deleted = $6 " +
-          "WHERE pet_servicoid = $1",
-        [
-          regPar.pet_servicoid,
-          regPar.petid,
-          regPar.servicoid,
-          regPar.data_servico,
-          regPar.observacao,
-          regPar.deleted,
-        ]
-      )
-    ).rowCount;
-  } catch (error) {
-    msg = "[mdlPetServicos|update] " + error.detail;
-    linhasAfetadas = -1;
-  }
+//insere um serviço
+const insertPetServicos = (request, res) =>
+  (async () => {
+    const reg = request.body;
+    let { msg, linhasAfetadas } = await mdlPetServicos.insertPetServicos(reg);
+    res.json({ "status": msg, "linhasAfetadas": linhasAfetadas });
+})();
 
-  return { msg, linhasAfetadas };
-};
+//atualiza o serviço
+const updatePetServicos = (request, res) =>
+  (async () => {
+    const reg = request.body;
+    let { msg, linhasAfetadas } = await mdlPetServicos.updatePetServicos(reg);
+    res.json({ "status": msg, "linhasAfetadas": linhasAfetadas });
+  })();
 
-const deletePetServicos = async (regPar) => {
-  let linhasAfetadas;
-  let msg = "ok";
 
-  try {
-    linhasAfetadas = (
-      await db.query(
-        "UPDATE pet_servicos SET deleted = true WHERE pet_servicoid = $1",
-        [regPar.pet_servicoid]
-      )
-    ).rowCount;
-  } catch (error) {
-    msg = "[mdlPetServicos|delete] " + error.detail;
-    linhasAfetadas = -1;
-  }
-
-  return { msg, linhasAfetadas };
-};
+//deleta as paradas  
+const deletePetServicos = (request, res) =>
+  (async () => {
+    const reg = request.body;
+    let { msg, linhasAfetadas } = await mdlPetServicos.deletePetServicos(reg);
+    res.json({ "status": msg, "linhasAfetadas": linhasAfetadas });
+  })();
 
 module.exports = {
   getAllPetServicos,
   getPetServicoByID,
   insertPetServicos,
   updatePetServicos,
-  deletePetServicos,
+  deletePetServicos
 };

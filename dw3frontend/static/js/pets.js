@@ -105,7 +105,6 @@ async function deletarPet(id, nome) {
 }
 
 
-
 async function carregarTutoresSelect() {
     const selectTutor = document.getElementById('tutorid');
     selectTutor.innerHTML = '<option value="">Carregando...</option>';
