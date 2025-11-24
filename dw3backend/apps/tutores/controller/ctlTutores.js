@@ -1,10 +1,12 @@
 const mdlTutores = require("../model/mdlTutores");
 
+
+//busca todos os tutores
 const getAllTutores = async (req, res, next) => {
   try {
     const registro = await mdlTutores.getAllTutores(); 
-    
     res.status(200).json({ status: "ok", registro });
+
   } catch (error) {
     console.error("Erro no Controller [getAllTutores]:", error);
     res.status(500).json({ message: "Erro interno ao buscar tutores." });
@@ -12,6 +14,7 @@ const getAllTutores = async (req, res, next) => {
 };
 
 
+//busca por id (tutor especificio)
 const getTutoresByID = async (req, res, next) => {
     try {
         const id = req.body.tutorid;
@@ -27,7 +30,7 @@ const getTutoresByID = async (req, res, next) => {
     }
 };
 
-
+//inserção dos tutores
 const insertTutores = async (req, res, next) => {
     try {
         const { nome, cpf, telefone, rua, numero, bairro, cidade } = req.body;
@@ -55,6 +58,7 @@ const insertTutores = async (req, res, next) => {
 };
 
 
+//ataulização de tutor
 const updateTutores = async (req, res, next) => {
     try {
         const tutorREGPar = req.body; //tutorregistroparametro
@@ -81,6 +85,7 @@ const updateTutores = async (req, res, next) => {
 };
 
 
+//soft delete dos tutores
 const deleteTutores = async (req, res, next) => {
     try {
         const tutorREGPar = req.body; 

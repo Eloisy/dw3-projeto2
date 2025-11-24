@@ -26,6 +26,7 @@ router.get('/home', authenticationMiddleware, function (req, res, next) {
 
 // --- ROTAS DE AUTENTICAÇÃO (LOGIN/LOGOUT) ---
 router.get('/Login', loginApp.Login);
+router.get('/Logout', loginApp.Logout); 
 
 
 router.post('/Login', clientLoginProcessor.processClientLogin);

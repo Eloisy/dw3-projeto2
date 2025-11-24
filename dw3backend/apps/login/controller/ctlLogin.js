@@ -2,8 +2,10 @@ const jwt = require("jsonwebtoken");
 const bCrypt = require("bcryptjs");
 const mdlLogin = require("../model/mdlLogin");
 
+
+
+//login
 const Login = async (req, res, next) => { 
-  
   const { UserName, Password } = req.body;
   const credencial = await mdlLogin.GetCredencial(UserName);
 
@@ -16,22 +18,23 @@ const Login = async (req, res, next) => {
     const token = jwt.sign({ username }, process.env.SECRET_API, {
       expiresIn: '30d', 
     });
-
-    // --- CORREÇÃO: ENVIA TOKEN E USERNAME (A fonte do dado) ---
     return res.json({ auth: true, token: token, username: username });
   }
 
   res.status(403).json({ message: "Login inválido!" });
 };
 
+
+
+//função de autenticação do TOKEN
 function AutenticaJWT(req, res, next) {
-  // [CÓDIGO DE SEGURANÇA SIMPLIFICADO]
   const tokenHeader = req.headers["authorization"];
+
   if (!tokenHeader)
     return res.status(401).json({ auth: false, message: "Não foi informado o token JWT" });
 
-  const bearer = tokenHeader.split(" ");
-  const token = bearer[1];
+    const bearer = tokenHeader.split(" ");
+    const token = bearer[1];
 
   jwt.verify(token, process.env.SECRET_API, function (err, decoded) {
     if (err)

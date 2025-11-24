@@ -1,0 +1,64 @@
+{% extends "templates/base.html" %}
+
+{% block content %}
+
+    <ol class="breadcrumb mb-2">
+        <li class="breadcrumb-item"><a href="/petservicos">Atendimentos</a></li>
+        <li class="breadcrumb-item active">{{parametros.title}}</li>
+    </ol>
+    
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary" id="manutencaoTitulo">Registrar Atendimento</h6>
+        </div>
+        <div class="card-body">
+            
+            <form id="formManutencaoAtendimento">
+                <input type="hidden" id="pet_servicoid" name="pet_servicoid" value="0">
+                <input type="hidden" id="deleted" name="deleted" value="false">
+                
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="petid" class="form-label">Pet*</label>
+                        <select class="form-select" id="petid" name="petid" required>
+                            <option value="">Carregando pets...</option>
+                        </select>
+                    </div>
+                    
+                    <div class="col-md-6 mb-3">
+                        <label for="servicoid" class="form-label">Serviço*</label>
+                        <select class="form-select" id="servicoid" name="servicoid" required>
+                            <option value="">Carregando serviços...</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="data_servico" class="form-label">Data do Atendimento*</label>
+                        <input type="date" class="form-control" id="data_servico" name="data_servico" required>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="observacao" class="form-label">Observações</label>
+                    <textarea class="form-control" id="observacao" name="observacao" rows="3"></textarea>
+                </div>
+                
+                <div class="mt-4">
+                    <button type="button" class="btn btn-primary me-2" onclick="salvarAtendimento()">
+                        <i class="fas fa-save"></i> Salvar
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="window.location.href='/petservicos'">
+                        <i class="fas fa-arrow-left"></i> Voltar
+                    </button>
+                    <p id="mensagemErro" class="text-danger mt-3"></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+<script src="/static/js/api.js"></script>
+<script src="/static/js/atendimentos.js"></script>
+
+{% endblock %}

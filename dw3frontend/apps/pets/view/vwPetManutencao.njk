@@ -1,0 +1,70 @@
+{% extends "templates/base.html" %}
+
+{% block content %}
+
+    <ol class="breadcrumb mb-2">
+        <li class="breadcrumb-item"><a href="/pets">Pets</a></li>
+        <li class="breadcrumb-item active">{{parametros.title}}</li>
+    </ol>
+    
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary" id="manutencaoTitulo">Cadastrar Novo Pet</h6>
+        </div>
+        <div class="card-body">
+            
+            <form id="formManutencaoPet">
+                <input type="hidden" id="petid" name="petid" value="0">
+                
+                <div class="row">
+                    <div class="col-md-5 mb-3">
+                        <label for="nome" class="form-label">Nome*</label>
+                        <input type="text" class="form-control" id="nome" name="nome" required>
+                    </div>
+                    
+                    <div class="col-md-4 mb-3">
+                        <label for="raca" class="form-label">Raça</label>
+                        <input type="text" class="form-control" id="raca" name="raca">
+                    </div>
+                    
+                    <div class="col-md-3 mb-3">
+                        <label for="genero" class="form-label">Gênero</label>
+                        <select class="form-select" id="genero" name="genero">
+                            <option value="M">Macho</option>
+                            <option value="F">Fêmea</option>
+                            <option value="">Não Informado</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="data_nascimento" class="form-label">Data de Nascimento</label>
+                        <input type="date" class="form-control" id="data_nascimento" name="data_nascimento">
+                    </div>
+                    
+                    <div class="col-md-8 mb-3">
+                        <label for="tutorid" class="form-label">Tutor (Proprietário)*</label>
+                        <select class="form-select" id="tutorid" name="tutorid" required>
+                            <option value="">Carregando tutores...</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <button type="button" class="btn btn-primary me-2" onclick="salvarPet()">
+                        <i class="fas fa-save"></i> Salvar
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="window.location.href='/pets'">
+                        <i class="fas fa-arrow-left"></i> Voltar
+                    </button>
+                    <p id="mensagemErro" class="text-danger mt-3"></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+<script src="/static/js/api.js"></script>
+<script src="/static/js/pets.js"></script>
+
+{% endblock %}

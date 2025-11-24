@@ -1,22 +1,48 @@
-const db = require("../../../database/databaseconfig");
+const db = require("../../../database/databaseConfig");
 
+// --- 1. FUNÇÃO GET ALL (Com Join para pegar o Nome do Tutor) ---
 const getAllPets = async () => {
   return (
     await db.query(
-      "SELECT * FROM pets WHERE deleted = false ORDER BY nome ASC" //soft delete
+      `SELECT 
+        p.petid, 
+        p.nome, 
+        p.raca, 
+        p.data_nascimento, 
+        p.genero, 
+        p.tutorid, 
+        t.nome AS nome_tutor,  -- << NOVO CAMPO: Nome do Tutor
+        p.deleted
+       FROM pets p
+       INNER JOIN tutores t ON p.tutorid = t.tutorid
+       WHERE p.deleted = false 
+       ORDER BY p.nome ASC`
     )
   ).rows;
 };
 
-const getPetByID = async (petIDPar) => { //petIDPar -parâmetro local que o mdl  usa para poder salvar o conteudo q rcb do ctl
+// --- 2. FUNÇÃO GET BY ID (Com Join) ---
+const getPetByID = async (petIDPar) => {
   return (
     await db.query(
-      "SELECT * FROM pets WHERE petid = $1 AND deleted = false ORDER BY nome ASC",
+      `SELECT 
+        p.petid, 
+        p.nome, 
+        p.raca, 
+        p.data_nascimento, 
+        p.genero, 
+        p.tutorid, 
+        t.nome AS nome_tutor, -- << NOVO CAMPO
+        p.deleted
+       FROM pets p
+       INNER JOIN tutores t ON p.tutorid = t.tutorid
+       WHERE p.petid = $1 AND p.deleted = false`,
       [petIDPar]
     )
   ).rows;
 };
 
+// --- 3. FUNÇÃO INSERT ---
 const insertPets = async (petREGPar) => {
   let linhasAfetadas;
   let msg = "ok";
@@ -43,6 +69,7 @@ const insertPets = async (petREGPar) => {
   return { msg, linhasAfetadas };
 };
 
+// --- 4. FUNÇÃO UPDATE ---
 const updatePets = async (petREGPar) => {
   let linhasAfetadas;
   let msg = "ok";
@@ -76,6 +103,7 @@ const updatePets = async (petREGPar) => {
   return { msg, linhasAfetadas };
 };
 
+// --- 5. FUNÇÃO DELETE ---
 const deletePets = async (petREGPar) => {
   let linhasAfetadas;
   let msg = "ok";
